@@ -43,8 +43,11 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Product.findBySalepricemin", query = "SELECT p FROM Product p WHERE p.salepricemin = :salepricemin")
     , @NamedQuery(name = "Product.findByReorderpoint", query = "SELECT p FROM Product p WHERE p.reorderpoint = :reorderpoint")
     , @NamedQuery(name = "Product.findByCurrency", query = "SELECT p FROM Product p WHERE p.currency = :currency")
-    , @NamedQuery(name = "Product.findBySalepricemay", query = "SELECT p FROM Product p WHERE p.salepricemay = :salepricemay")})
+    , @NamedQuery(name = "Product.findBySalepricemax", query = "SELECT p FROM Product p WHERE p.salepricemax = :salepricemax")})
 public class Product implements Serializable {
+
+    @OneToMany(mappedBy = "productid", fetch = FetchType.LAZY)
+    private List<Salesline> saleslineList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -83,12 +86,10 @@ public class Product implements Serializable {
     @Column(name = "currency")
     private String currency;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "salepricemay")
-    private Double salepricemay;
-    @OneToMany(mappedBy = "productid", fetch=FetchType.LAZY)
-    private List<Salesline> saleslineList;
+    @Column(name = "salepricemax")
+    private Double salepricemax;
     @JoinColumn(name = "categoryid", referencedColumnName = "categoryid")
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category categoryid;
 
     public Product() {
@@ -179,21 +180,12 @@ public class Product implements Serializable {
         this.currency = currency;
     }
 
-    public Double getSalepricemay() {
-        return salepricemay;
+    public Double getSalepricemax() {
+        return salepricemax;
     }
 
-    public void setSalepricemay(Double salepricemay) {
-        this.salepricemay = salepricemay;
-    }
-
-    @XmlTransient
-    public List<Salesline> getSaleslineList() {
-        return saleslineList;
-    }
-
-    public void setSaleslineList(List<Salesline> saleslineList) {
-        this.saleslineList = saleslineList;
+    public void setSalepricemax(Double salepricemax) {
+        this.salepricemax = salepricemax;
     }
 
     public Category getCategoryid() {
@@ -227,6 +219,15 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "mx.edu.ittepic.u2t01.entities.Product[ productid=" + productid + " ]";
+    }
+
+    @XmlTransient
+    public List<Salesline> getSaleslineList() {
+        return saleslineList;
+    }
+
+    public void setSaleslineList(List<Salesline> saleslineList) {
+        this.saleslineList = saleslineList;
     }
     
 }
