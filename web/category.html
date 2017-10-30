@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Catálogo de categorías</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!--JS-->
+        <script type="text/javascript" 
+        src="js/plugins/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" 
+        src="js/plugins/jquery.validate.min.js"></script>
+
+        <script type="text/javascript" 
+        src="js/plugins/jquery.growl.js"></script> 
+
+        <script type="text/javascript" 
+        src="js/plugins/jquery.dataTables.min.js"></script>
+
+        <script type="text/javascript" 
+        src="js/plugins/bootstrap.min.js"></script>
+        <script type = "text/javascript" src = "js/plugins/sweetalert2.all.min.js"></script>
+        <script type="text/javascript" 
+        src="js/categories.js"></script>
+
+        <!--CSS-->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/jquery.growl.css" rel="stylesheet">
+        <link href="css/jquery.dataTables.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-6" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="index.html" class="navbar-brand">Hola</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html">Roles</a></li>
+                        <li class="active"><a>Categorías</a></li>
+                        <li><a href="company.html">Empresas</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <br><br><br><br>
+        <div class="container">
+            <div class="modal" id="modalCategory">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type = "button" class = "close" data-dismiss = "modal" 
+                                    aria-hidden = "true">&times;</button>
+                            <h3 class="modal-title">Modificar Categoría</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form id="frmEditCategory">
+                                <input type="hidden" class="form-control" id="categoryid" name="categoryid">
+                                <div class="form-group">
+                                    <label for="categoryname2">Nombre de la categoría</label>
+                                    <input type="text" class="form-control" id="categoryname2" name="categoryname2" placeholder="Nombre de la categoría">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnModificar" type="button" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12 col-sm-4">
+                    <form id="frmCategory" method="POST" action="">
+                        <div class="form-group">
+                            <label for="categoryname">Nombre de la categoría</label>
+                            <input type="text" class="form-control" id="categoryname" name="categoryname" placeholder="Nombre de la categoría">
+                        </div>
+                        <div align = "right">
+                            <button type = "submit" class = "btn btn-primary">
+                                <span class = "glyphicon glyphicon-floppy-disk" aria-hidden = "true"></span> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-12 col-sm-8">
+                    <table id="tbcategories" class="table">
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Nombre</th>
+                                <th>Operaciones</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>

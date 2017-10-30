@@ -5,31 +5,25 @@
  */
 
 $(function () {
-    $('#frmRole').validate({
+    $('#frmCategory').validate({
         rules: {
-            rolename: {
+            categoryname: {
                 minlength: 3,
-                maxlength: 20,
-                required: true
-            },
-            salary: {
+                maxlength: 50,
                 required: true
             }
         },
         messages: {
-            rolename: {
+            categoryname: {
                 minlength: 'Debe tener más de tres caracteres.',
-                maxlength: 'Debe tener menos de 20 caracteres.',
-                required: 'El nombre del rol es obligatorio.'
-            },
-            salary: {
-                required: 'El salario es obligatorio'
+                maxlength: 'Debe tener menos de 50 caracteres.',
+                required: 'El nombre de la categoría es obligatorio.'
             }
         },
         highlight: function (element) {
             $(element).closest('.form-group').addClass('has-error');
         },
-        unhighlight: function (element) {
+        unhighlight: function(element) {
             $(element).closest('.form-group').removeClass('has-error');
         },
         errorElement: 'span',
@@ -38,30 +32,30 @@ $(function () {
             error.insertAfter(element.parent());
         },
         submitHandler: function (form) {
-            newRole();
+            newCategory();
             return false;
         }
     });
     
-    $('#frmEditRole').validate({
+    $('#frmEditCategory').validate({
         rules: {
-            rolename2: {
+            categoryname: {
                 minlength: 3,
-                maxlength: 20,
+                maxlength: 50,
                 required: true
             }
         },
         messages: {
-            rolename2: {
+            categoryname: {
                 minlength: 'Debe tener más de tres caracteres.',
-                maxlength: 'Debe tener menos de 20 caracteres.',
-                required: 'El nombre del rol es obligatorio.'
+                maxlength: 'Debe tener menos de 50 caracteres.',
+                required: 'El nombre de la categoría es obligatorio.'
             }
         },
         highlight: function (element) {
             $(element).closest('.form-group').addClass('has-error');
         },
-        unhighlight: function (element) {
+        unhighlight: function(element) {
             $(element).closest('.form-group').removeClass('has-error');
         },
         errorElement: 'span',
@@ -70,51 +64,37 @@ $(function () {
             error.insertAfter(element.parent());
         },
         submitHandler: function (form) {
-            updateRole();
+            updateCategory();
             return false;
         }
     });
-
-    $('#tbroles').DataTable({
+    
+    $('#tbcategories').DataTable({
         language: {
             url: '//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json'
         },
         ajax: {
-            url: 'ConsultaRoles',
+            url: 'ConsultaCategorias',
             dataSrc: function (json) {
-                console.log(json.detail);
                 return $.parseJSON(json.detail);
             }
         },
         columns: [
             {
                 data: function (row) {
-                    return "<div align = 'center'>" + row["roleid"] + "</div>";
-                }
+                    return "<div align = 'center'>" + row["categoryid"] + "</div>";
+                }   
             },
-            {data: 'rolename'},
-            { 
-                data: function(row){
-                    return "<div align = 'center'>" + accounting.formatMoney(row["salary"]) + "</div>";
-                }
-            },
-            
+            { data: 'categoryname' },
             {
                 data: function (row) {
-                    moment.locale('es');
-                    return moment(row["createdat"]).format('LL');
-                }
-            },
-            {
-                data: function (row) {
-                    //return row['roleid'];
                     var str = "<div align = 'center'>";
                     str += "<button class = 'btn btn-danger btn-xs'\n\
-                            onclick = 'deleteRole(" + row["roleid"] + ")'><span\n\
+                            onclick = 'deleteCategory(" + row["categoryid"] + ")'><span\n\
                             class = 'glyphicon glyphicon-trash' \n\
                             aria-hidden = 'true'></span></button>";
                     str += "&nbsp;<button class = 'btn btn-info btn-xs' \n\
-                            onclick = 'showRole(" + row["roleid"] + ",\"" + row["rolename"] + "\")'>\n\
+                            onclick = 'showCategory(" + row["categoryid"] + ",\"" + row["categoryname"] + "\")'>\n\
                             <span class = 'glyphicon glyphicon-pencil' \n\
                             aria-hidden = 'true'></span></button>";
                     str += "</div>";
@@ -125,34 +105,23 @@ $(function () {
     });
     
     $('#btnModificar').click(function () {
-        $('#frmEditRole').submit();
+        $('#frmEditCategory').submit();
     });
 });
 
-function formatDate(date){
-    
-}
-
-function formatSalary(salary){
-    
-}
-
-function newRole() {
+function newCategory () {    
     $.ajax({
-        url: 'CrearRol',
-        type: 'post',
-        data: {
-            rolename: $('#rolename').val(),
-            salary: $('#salary').val()
-        }
+       url: 'CrearCategoria',
+       type: 'post',
+       data: $('#frmCategory').serialize()
     })
     .done(function (data) {
         $.growl.notice({
             title: '¡Exitoso!',
             message: data.message
         });
-        $('#rolename').val('');
-        $('#tbroles').dataTable().api().ajax.reload(null, false);
+        $('#categoryname').val('');
+        $('#tbcategories').dataTable().api().ajax.reload(null, false);
     })
     .fail(function (data) {
         $.growl.error({
@@ -162,9 +131,9 @@ function newRole() {
     });
 }
 
-function deleteRole(id) {
+function deleteCategory(id) {
     swal({
-        title: '¿Estás seguro de eliminar el rol?',
+        title: '¿Estás seguro de eliminar la categoría?',
         text: "La operación es irreversible",
         type: 'warning',
         showCancelButton: true,
@@ -174,29 +143,20 @@ function deleteRole(id) {
         cancelButtonText: 'Cancelar'
     }).then(function () {
         $.ajax({
-            url: 'EliminarRol',
+            url: 'EliminarCategoria',
             type: 'post',
             data: { id: id }
         })
         .done(function (data) {
             console.log(data);
-//            $.growl.notice({
-//                title: '¡Exitoso!',
-//                message: data.message
-//            });
             swal(
                 '¡Exitoso!',
                 data.message,
                 'success'
                 );
-            $('#tbroles').dataTable().api().ajax.reload(null, false);
+            $('#tbcategories').dataTable().api().ajax.reload(null, false);
         })
         .fail(function (data) {
-            //console.log(data);
-//            $.growl.error({
-//                title: '¡Error!',
-//                message: data.responseJSON.message
-//            });
             swal(
                 '¡Error!',
                 data.responseJSON.message,
@@ -206,19 +166,19 @@ function deleteRole(id) {
     });
 }
 
-function showRole(id, name) {
-    $('#roleid').val(id);
-    $('#rolename2').val(name);
-    $('#modalRole').modal('show');
+function showCategory(id, name) {
+   $('#categoryid').val(id);
+    $('#categoryname2').val(name);
+    $('#modalCategory').modal('show');
 }
 
-function updateRole(){
+function updateCategory(){
     $.ajax({
-        url: 'ActualizarRol',
+        url: 'ActualizarCategoria',
         type: 'post',
         data: {
-            roleid: $('#roleid').val(),
-            rolename: $('#rolename2').val()
+            categoryid: $('#categoryid').val(),
+            categoryname: $('#categoryname2').val()
         }
     })
     .done(function (data) {
@@ -226,8 +186,8 @@ function updateRole(){
             title: '¡Exitoso!',
             message: data.message
         });
-        $('#tbroles').dataTable().api().ajax.reload(null, false);
-        $('#modalRole').modal('hide');
+        $('#tbcategories').dataTable().api().ajax.reload(null, false);
+        $('#modalCategory').modal('hide');
     })
     .fail(function (data) {
         $.growl.error({

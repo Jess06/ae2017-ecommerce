@@ -85,9 +85,11 @@ public class CrearRol extends HttpServlet {
         Message m = new Message();
         PrintWriter p = response.getWriter();
         String rolename = request.getParameter("rolename");
+        String salary = request.getParameter("salary");
         rolename = rolename.trim();
+        salary = salary.trim();
         
-        if(rolename == null || rolename.equals("")){
+        if(rolename == null || rolename.equals("") || salary == null || rolename.equals("")){
             m.setCode(HttpServletResponse.SC_BAD_REQUEST);
             m.setMessage("Parámetros incorrectos");
             m.setDetail("No se proporcionó ningún parámentro o el tipo de dato es incorrecto");
@@ -98,7 +100,16 @@ public class CrearRol extends HttpServlet {
 
             p.write(gson.toJson(m));
         } else {
-            p.write(ejb.createRol(rolename));
+            Double salary2 = 0.0;
+            try {
+                salary2 = Double.parseDouble(salary);
+            } catch (NumberFormatException e){
+                m.setCode(HttpServletResponse.SC_BAD_REQUEST);
+                m.setMessage("Parámetros incorrectos");
+                m.setDetail("No se proporcionó ningún parámentro o el tipo de dato es incorrecto");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+            p.write(ejb.createRol(rolename, salary2));
         }
     }
 

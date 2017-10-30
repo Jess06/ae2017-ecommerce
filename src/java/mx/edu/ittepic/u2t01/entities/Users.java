@@ -6,7 +6,6 @@
 package mx.edu.ittepic.u2t01.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,12 +17,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -50,14 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Users.findByStreetnumber", query = "SELECT u FROM Users u WHERE u.streetnumber = :streetnumber")
     , @NamedQuery(name = "Users.findByPhoto", query = "SELECT u FROM Users u WHERE u.photo = :photo")
     , @NamedQuery(name = "Users.findByGender", query = "SELECT u FROM Users u WHERE u.gender = :gender")})
-
 public class Users implements Serializable {
-
-    @OneToMany(mappedBy = "userid", fetch=FetchType.LAZY)
-    private List<Sale> saleList;
-    @JoinColumn(name = "companyid", referencedColumnName = "companyid")
-    @ManyToOne(fetch=FetchType.LAZY)
-    private Company companyid;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -113,10 +103,14 @@ public class Users implements Serializable {
     @Size(max = 255)
     @Column(name = "photo")
     private String photo;
+    @Size(max = 1)
     @Column(name = "gender")
     private String gender;
+    @JoinColumn(name = "companyid", referencedColumnName = "companyid")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Company companyid;
     @JoinColumn(name = "roleid", referencedColumnName = "roleid")
-    @ManyToOne (fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Role roleid;
 
     public Users() {
@@ -260,6 +254,14 @@ public class Users implements Serializable {
         this.gender = gender;
     }
 
+    public Company getCompanyid() {
+        return companyid;
+    }
+
+    public void setCompanyid(Company companyid) {
+        this.companyid = companyid;
+    }
+
     public Role getRoleid() {
         return roleid;
     }
@@ -291,23 +293,6 @@ public class Users implements Serializable {
     @Override
     public String toString() {
         return "mx.edu.ittepic.u2t01.entities.Users[ userid=" + userid + " ]";
-    }
-
-    @XmlTransient
-    public List<Sale> getSaleList() {
-        return saleList;
-    }
-
-    public void setSaleList(List<Sale> saleList) {
-        this.saleList = saleList;
-    }
-
-    public Company getCompanyid() {
-        return companyid;
-    }
-
-    public void setCompanyid(Company companyid) {
-        this.companyid = companyid;
     }
     
 }

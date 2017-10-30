@@ -92,7 +92,7 @@ public class Company implements Serializable {
     @Size(max = 15)
     @Column(name = "phone")
     private String phone;
-    @OneToMany(mappedBy = "companyid", fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "companyid", fetch = FetchType.LAZY)
     private List<Users> usersList;
 
     public Company() {

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Catálogo de empresas</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--JS-->
+        <script type="text/javascript" 
+        src="js/plugins/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" 
+        src="js/plugins/jquery.validate.min.js"></script>
+
+        <script type="text/javascript" 
+        src="js/plugins/jquery.growl.js"></script> 
+
+        <script type="text/javascript" 
+        src="js/plugins/jquery.dataTables.min.js"></script>
+
+        <script type="text/javascript" 
+        src="js/plugins/bootstrap.min.js"></script>
+        <script type = "text/javascript" src = "js/plugins/sweetalert2.all.min.js"></script>
+        <script type="text/javascript" 
+        src="js/companies.js"></script>
+
+        <!--CSS-->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/jquery.growl.css" rel="stylesheet">
+        <link href="css/jquery.dataTables.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-6" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="index.html" class="navbar-brand">Hola</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html">Roles</a></li>
+                        <li><a href="category.html">Categorías</a></li>
+                        <li class="active"><a>Empresas</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <br><br><br><br>
+        <div class="container">
+            <div class="modal" id="modalCompany">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Empresas</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="frmEditCompany">
+                                <input type="text" class="form-control" id="edRoleid" name="edCompanyid" hidden="hidden">
+
+                                <div class="form-group">
+                                    <label for="edCompanyname">Nombre de la empresa</label>
+                                    <input type="text" class="form-control" id="edCompanyname" name="companyname" placeholder="Nombre de la empresa">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edNeighborhood">Vecindario</label>
+                                    <input type="text" class="form-control" id="edNeighborhood" name="neighborhood" placeholder="Vecindario">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edCity">Ciudad</label>
+                                    <input type="text" class="form-control" id="edCity" name="city" placeholder="Ciudad">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edState">Estado</label>
+                                    <input type="text" class="form-control" id="edState" name="state" placeholder="Estado">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edRegion">Región</label>
+                                    <input type="text" class="form-control" id="edRegion" name="region" placeholder="Región">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edCountry">País</label>
+                                    <input type="text" class="form-control" id="edCountry" name="country" placeholder="País">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edZipcode">Código postal</label>
+                                    <input type="text" class="form-control" id="edZipcode" name="zipcode" placeholder="Código postal">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edStreet">Calle</label>
+                                    <input type="text" class="form-control" id="edStreet" name="street" placeholder="Calle">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edStreetnumber">Número</label>
+                                    <input type="text" class="form-control" id="edStreetnumber" name="streetnumber" placeholder="Número">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edRfc">RFC</label>
+                                    <input type="text" class="form-control" id="edRfc" name="rfc" placeholder="RFC">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edPhone">Teléfono</label>
+                                    <input type="tel" class="form-control" id="edPhone" name="phone" placeholder="Teléfono">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edLogo">Logo</label>
+                                    <input type="file" class="form-control" id="edLogo" name="logo">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnModificar" type="button" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-sm-4">
+                    <form id="frmCompany" method="POST" action="">
+                        <div class="form-group">
+                            <label for="companyname">Nombre de la empresa</label>
+                            <input type="text" class="form-control" id="companyname" name="companyname" placeholder="Nombre de la empresa">
+                        </div>
+                        <div class="form-group">
+                            <label for="neighborhood">Vecindario</label>
+                            <input type="text" class="form-control" id="neighborhood" name="neighborhood" placeholder="Vecindario">
+                        </div>
+                        <div class="form-group">
+                            <label for="city">Ciudad</label>
+                            <input type="text" class="form-control" id="city" name="city" placeholder="Ciudad">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">Estado</label>
+                            <input type="text" class="form-control" id="state" name="state" placeholder="Estado">
+                        </div>
+                        <div class="form-group">
+                            <label for="region">Región</label>
+                            <input type="text" class="form-control" id="region" name="region" placeholder="Región">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">País</label>
+                            <input type="text" class="form-control" id="country" name="country" placeholder="País">
+                        </div>
+                        <div class="form-group">
+                            <label for="zipcode">Código postal</label>
+                            <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Código postal">
+                        </div>
+                        <div class="form-group">
+                            <label for="street">Calle</label>
+                            <input type="text" class="form-control" id="street" name="street" placeholder="Calle">
+                        </div>
+                        <div class="form-group">
+                            <label for="streetnumber">Número</label>
+                            <input type="text" class="form-control" id="streetnumber" name="streetnumber" placeholder="Número">
+                        </div>
+                        <div class="form-group">
+                            <label for="rfc">RFC</label>
+                            <input type="text" class="form-control" id="rfc" name="rfc" placeholder="RFC">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Teléfono</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Teléfono">
+                        </div>
+                        <div class="form-group">
+                            <label for="logo">Logo</label>
+                            <input type="file" class="form-control" id="logo" name="logo">
+                        </div>
+                        <div align = "right">
+                            <button type = "submit" class = "btn btn-primary">
+                                <span class = "glyphicon glyphicon-floppy-disk" aria-hidden = "true"></span> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+
+                <div class="col-12 col-sm-8">
+                    <table id="tbRoles" class="table">
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Nombre</th>
+                                <th>RFC</th>
+                                <th>Teléfono</th>
+                                <th>Operaciones</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

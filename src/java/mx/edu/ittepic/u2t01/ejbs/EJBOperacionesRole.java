@@ -7,6 +7,7 @@ package mx.edu.ittepic.u2t01.ejbs;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
@@ -96,13 +97,15 @@ public class EJBOperacionesRole {
         return result;
     }
 
-    public String createRol(String rolname) {
+    public String createRol(String rolname, Double salary) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         Message m = new Message();
 
         Role rol = new Role();
         rol.setRolename(rolname);
+        rol.setSalary(salary);
+        rol.setCreatedat(new Date());
 
         try {
             //Crear nuevo registro en la BD.

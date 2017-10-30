@@ -91,7 +91,7 @@ public class ActualizarCategoria extends HttpServlet {
         Message m = new Message();
 
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
+            int id = Integer.parseInt(request.getParameter("categoryid"));
             String name = request.getParameter("categoryname");
 
             if (name == null || name.equals("")) {
