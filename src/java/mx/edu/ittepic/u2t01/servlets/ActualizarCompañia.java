@@ -22,7 +22,7 @@ import mx.edu.ittepic.u2t01.utils.Message;
  *
  * @author kon_n
  */
-@WebServlet(name = "ActualizarCompañia", urlPatterns = {"/ActualizarCompa_ia"})
+@WebServlet(name = "ActualizarCompañia", urlPatterns = {"/ActualizarCompany"})
 public class ActualizarCompañia extends HttpServlet {
     @EJB
     private EJBOperacionesCompany ejb;
@@ -89,7 +89,7 @@ public class ActualizarCompañia extends HttpServlet {
         Message m = new Message();
 
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
+            int id = Integer.parseInt(request.getParameter("companyid"));
             String companyName = request.getParameter("companyname");
             String neighborhood = request.getParameter("neighborhood");
             String zipcode= request.getParameter("zipcode");

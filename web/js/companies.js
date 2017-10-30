@@ -41,7 +41,11 @@ $(function () {
             },
             phone: {
                 digits: true,
-                rangelength: [7, 10]
+                rangelength: [7, 10],
+                required: true
+            }, 
+            rfc: {
+                required: true
             }
         },
         messages: {
@@ -51,7 +55,8 @@ $(function () {
             },
             phone: {
                 rangelength: 'El teléfono debe tener entre 7 y 10 caracteres.',
-                digits: 'Debe introducir sólo números.'
+                digits: 'Debe introducir sólo números.',
+                required: 'El número de teléfono es obligatorio.'
             },
             street: {
                 required: 'La calle es obligatoria.'
@@ -80,6 +85,9 @@ $(function () {
             },
             logo: {
                 
+            },
+            rfc: {
+                required: 'El RFC es obligatorio.'
             }
         },
         highlight: function (element) {
@@ -101,79 +109,87 @@ $(function () {
     
     $('#frmEditCompany').validate({
         rules: {
-            companyname: {
+            companyname2: {
                 required: true,
                 rangelength: [3, 20]
             },
-            street: {
+            street2: {
                 //required: true
             },
-            streetnumber: {
+            streetnumber2: {
                 //required: true,
                 digits: true
             },
-            neighborhood: {
+            neighborhood2: {
                 //required: true
             },
-            zipcode: {
+            zipcode2: {
                 digits: true
             },
-            city: {
+            city2: {
                 //required: true
             },
-            state: {
+            state2: {
                 //required: true
             },
-            region: {
+            region2: {
                 
             },
-            country: {
+            country2: {
                 //required: true
             },
-            logo: {
+            logo2: {
                 
             },
-            phone: {
+            phone2: {
+                required: true,
                 digits: true,
                 rangelength: [7, 10]
+            },
+            rfc2: {
+                required: true
             }
         },
         messages: {
-            companyname: {
+            companyname2: {
                 required: 'El nombre de la compañía es obligatorio.',
                 rangelength: 'El nombre de la compañía debe ser entre 3 y 20 caracteres.'
             },
-            phone: {
+            phone2: {
                 rangelength: 'El teléfono debe tener entre 7 y 10 caracteres.',
-                digits: 'Debe introducir sólo números.'
+                digits: 'Debe introducir sólo números.',
+                required: 'El número de teléfono es obligatorio.'
             },
-            street: {
+            street2: {
                 required: 'La calle es obligatoria.'
             },
-            streetnumber: {
+            streetnumber2: {
                 required: 'El número es obligatorio.',
                 digits: 'Debe introducir sólo números.'
             },
-            neighborhood: {
+            neighborhood2: {
                 required: 'La colonia es obligatoria.'
             },
-            zipcode: {
+            zipcode2: {
                 digits: 'Debe introducir sólo números.'
             },
-            city: {
+            city2: {
                 required: 'La ciudad es obligatoria.'
             },
-            state: {
+            state2: {
                 required: 'El estado es obligatorio.'
             },
-            region: {
+            region2: {
                 
             },
-            country: {
+            country2: {
                 required: 'El país es obligatorio.'
             },
-            logo: {
+            logo2: {
                 
+            },
+            rfc2: {
+                required: 'El RFC es obligatorio.'
             }
         },
         highlight: function (element) {
@@ -198,7 +214,7 @@ $(function () {
             url: '//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json'
         },
         ajax: {
-            url: 'ConsultaCompaies',
+            url: 'ConsultaCompanies',
             dataSrc: function (json) {
                 return $.parseJSON(json.detail);
             }
@@ -212,10 +228,6 @@ $(function () {
             { data: 'companyname' },
             { data: 'rfc' },
             { data: 'phone' },
-            { data: 'street' },
-            { data: 'streetnumber' },
-            { data: 'neighborhood' },
-            { data: 'city' },
             {
                 data: function (row) {
                     var str = "<div align = 'center'>";
@@ -224,7 +236,7 @@ $(function () {
                             class = 'glyphicon glyphicon-trash' \n\
                             aria-hidden = 'true'></span></button>";
                     str += "&nbsp;<button class = 'btn btn-info btn-xs' \n\
-                            onclick = 'showCompany(" + row + ")'>\n\
+                            onclick = 'showCompany(" + JSON.stringify(row) + ")'>\n\
                             <span class = 'glyphicon glyphicon-pencil' \n\
                             aria-hidden = 'true'></span></button>";
                     str += "</div>";
@@ -235,28 +247,39 @@ $(function () {
     });
     
     $('#btnModificar').click(function () {
-        $('#frmEditCategory').submit();
+        $('#frmEditCompany').submit();
     });
 });
 
 function newCompany () {
     $.ajax({
-       url: 'CrearCategory',
+       url: 'CrearCompany',
        type: 'post',
-       date: $('#frmCategory').serialize()
+       data: $('#frmCompany').serialize()
     })
     .done(function (data) {
         $.growl.notice({
             title: '¡Exitoso!',
             message: data.message
         });
-        $('#categoryname').val('');
-        $('#tbcategories').dataTable().api().ajax.reload(null, false);
+        $('#companyname').val('');
+        $('#neighborhood').val('');
+        $('#city').val('');
+        $('#state').val('');
+        $('#region').val('');
+        $('#country').val('');
+        $('#zipcode').val('');
+        $('#street').val('');
+        $('#streetnumber').val('');
+        $('#rfc').val('');
+        $('#phone').val('');
+        
+        $('#tbcompanies').dataTable().api().ajax.reload(null, false);
     })
     .fail(function (data) {
         $.growl.error({
             title: '¡Error!',
-            message: data.responseJSON.mesage
+            message: data.responseJSON.message
         });
     });
 }
@@ -278,13 +301,12 @@ function deleteCompany(id) {
             data: { id: id }
         })
         .done(function (data) {
-            console.log(data);
             swal(
                 '¡Exitoso!',
                 data.message,
                 'success'
                 );
-            $('#tbroles').dataTable().api().ajax.reload(null, false);
+            $('#tbcompanies').dataTable().api().ajax.reload(null, false);
         })
         .fail(function (data) {
             swal(
@@ -299,12 +321,17 @@ function deleteCompany(id) {
 function showCompany(company) {
    $('#companyid').val(company.companyid);
    $('#companyname2').val(company.companyname);
-   $('#rcf2').val(company.rfc);
+   $('#rfc2').val(company.rfc);
    $('#phone2').val(company.phone);
    $('#street2').val(company.street);
    $('#streetnumber2').val(company.streetnumber);
    $('#neighborhood2').val(company.neighborhood);
    $('#city2').val(company.city);
+   $('#zipcode2').val(company.zipcode);
+   $('#country2').val(company.country);
+   $('#state2').val(company.state);
+   //$('#logo2').prop('files');
+   
    $('#modalCompany').modal('show');
 }
 
@@ -313,14 +340,18 @@ function updateCompany(){
         url: 'ActualizarCompany',
         type: 'post',
         data: {
-            roleid: $('#companyid').val(),
-            rolename: $('#companyname2').val(),
-            rfc: $('#rcf2').val(),
+            companyid: $('#companyid').val(),
+            companyname: $('#companyname2').val(),
+            rfc: $('#rfc2').val(),
             phone: $('#phone2').val(),
             street: $('#street2').val(),
             streetnumber: $('#streetnumber2').val(),
             neighborhood: $('#neighborhood2').val(),
-            city: $('#city2').val()
+            city: $('#city2').val(),
+            zipcode: $('#zipcode2').val(),
+            country: $('#country2').val(),
+            state: $('#state2').val(),
+            //logo: $('#logo2').prop('files')
         }
     })
     .done(function (data) {

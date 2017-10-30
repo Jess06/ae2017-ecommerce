@@ -22,7 +22,7 @@ import mx.edu.ittepic.u2t01.utils.Message;
  *
  * @author kon_n
  */
-@WebServlet(name = "ConsultaCompañia", urlPatterns = {"/ConsultaCompa_ia"})
+@WebServlet(name = "ConsultaCompañia", urlPatterns = {"/ConsultaCompany"})
 public class ConsultaCompañia extends HttpServlet {
     @EJB
     private EJBOperacionesCompany ejb;

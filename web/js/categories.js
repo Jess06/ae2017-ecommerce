@@ -39,14 +39,14 @@ $(function () {
     
     $('#frmEditCategory').validate({
         rules: {
-            categoryname: {
+            categoryname2: {
                 minlength: 3,
                 maxlength: 50,
                 required: true
             }
         },
         messages: {
-            categoryname: {
+            categoryname2: {
                 minlength: 'Debe tener más de tres caracteres.',
                 maxlength: 'Debe tener menos de 50 caracteres.',
                 required: 'El nombre de la categoría es obligatorio.'
