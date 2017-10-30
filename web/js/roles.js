@@ -129,14 +129,6 @@ $(function () {
     });
 });
 
-function formatDate(date){
-    
-}
-
-function formatSalary(salary){
-    
-}
-
 function newRole() {
     $.ajax({
         url: 'CrearRol',
